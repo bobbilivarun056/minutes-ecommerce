@@ -1,19 +1,8 @@
 import os
 import sqlite3
 from flask import Flask, render_template, request, jsonify
-from flask_mail import Mail, Message
 
 app = Flask(__name__)
-
-# --- MAIL CONFIGURATION ---
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'bobbilimighty@gmail.com'      # ⚠️ Replace with your Gmail
-app.config['MAIL_PASSWORD'] = 'rrim hnrl clpz digq'       # ⚠️ Replace with your 16-digit App Password
-app.config['MAIL_DEFAULT_SENDER'] = 'bobbilimighty@gmail.com'
-
-mail = Mail(app)
 
 # Configure where to save uploaded images locally
 UPLOAD_FOLDER = 'static/uploads/'
@@ -79,7 +68,7 @@ def add_product():
     conn.close()
     return jsonify({"message": "Success!"}), 201
 
-# 3. Process Checkout & Send Email
+# 3. Fail-Safe Cloud Checkout API (Bypasses email blocks completely)
 @app.route('/api/checkout', methods=['POST'])
 def process_checkout():
     data = request.json
@@ -87,29 +76,19 @@ def process_checkout():
     address = data.get('address', '')
     total_price = data.get('total', 0)
     
-    # Format the item list text for the email body
-    items_text = ""
+    # Format the item list text and print directly to Render Dashboard Logs
+    print("\n" + "="*40)
+    print("📢 SUCCESS: MINUTES LIVE ORDER LOGGED ON CLOUD")
+    print("="*40)
     for item in cart_items:
-        items_text += f"- {item['name']}: ₹{item['price']}\n"
-        
-    # Construct the Email Message
-    msg = Message(
-        subject="Minutes E-Commerce - New Order Placed! 🛒",
-        recipients=['bobbilimighty@gmail.com'], # ⚠️ Sends a copy directly to your inbox
-        body=f"Hello Team Minutes,\n\nA new order has been successfully placed via COD!\n\n"
-             f"📦 ORDER SUMMARY:\n{items_text}\n"
-             f"💰 Total Billing Amount: ₹{total_price}\n\n"
-             f"📍 DELIVERY ADDRESS:\n{address}\n\n"
-             f"Expected fast delivery window: Within 30 Minutes."
-    )
+        print(f"📦 ITEM: {item['name']} - ₹{item['price']}")
+    print(f"💰 TOTAL BILL: ₹{total_price}")
+    print(f"📍 SHIPPING ADDRESS: {address}")
+    print("="*40 + "\n")
     
-    try:
-        mail.send(msg)
-        return jsonify({"message": "Order processed and email sent successfully!"}), 200
-    except Exception as e:
-        print("Mail error:", str(e))
-        return jsonify({"message": "Order saved, but mail transmission failed."}), 500
+    # Instantly returns success to the user interface
+    return jsonify({"message": "Order processed successfully!"}), 200
 
 if __name__ == '__main__':
-    # Adding host='0.0.0.0' opens your server to the local network
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(debug=False, host='0.0.0.0', port=port)
