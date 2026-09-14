@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minutes | Merchant Management</title>
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-custom mb-5">
+        <div class="container"><a class="navbar-brand fw-bold" href="/">Minutes Seller Central</a></div>
+    </nav>
+
+    <div class="container" style="max-width: 500px;">
+        <div class="custom-card-container">
+            <h4 class="mb-4 text-center fw-bold text-primary">List a New Product</h4>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Product Title</label>
+                    <input type="text" name="name" class="form-control" placeholder="e.g., Apple iPhone 15 Pro" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Price (INR)</label>
+                    <input type="number" name="price" class="form-control" placeholder="e.g., 79999" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Product Graphic/Photo</label>
+                    <input type="file" name="image" class="form-control" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Publish to Minutes Marketplace</button>
+            </form>
+            <div class="text-center mt-3"><a href="/" class="text-decoration-none">← Return to Storefront</a></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(document.getElementById('uploadForm'));
+            const response = await fetch('/api/products', { method: 'POST', body: formData });
+            if(response.ok) {
+                alert('Product successfully published onto the live store layout!');
+                document.getElementById('uploadForm').reset();
+            }
+        });
+    </script>
+</body>
+</html>

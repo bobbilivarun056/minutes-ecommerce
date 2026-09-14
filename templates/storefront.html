@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minutes | Online Marketplace</title>
+    <style>
+        /* --- Sky Blue Oil Painting Theme --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #e3edf7; 
+            background-image: radial-gradient(circle at 50% 50%, #f0f7ff 0%, #cbdcf0 100%);
+            color: #1e293b;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            padding-bottom: 50px;
+        }
+
+        /* --- Prussian Blue Navbar --- */
+        .navbar-custom {
+            background: linear-gradient(135deg, #0f2b48 0%, #051424 100%); 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 8%;
+            border-bottom: 3px solid #d4af37; /* Gold Trim */
+            box-shadow: 0 4px 15px rgba(5, 20, 36, 0.25);
+        }
+
+        .navbar-brand {
+            color: #f4efe6;
+            font-size: 26px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .navbar-brand span {
+            font-style: italic;
+            color: #d4af37;
+            font-size: 13px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .nav-buttons a {
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 18px;
+            border-radius: 20px;
+            margin-left: 12px;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .btn-cart {
+            color: #f4efe6;
+            border: 1px solid #f4efe6;
+        }
+
+        .btn-seller {
+            background: linear-gradient(135deg, #d4af37 0%, #aa841d 100%);
+            color: #0c2226;
+        }
+
+        /* --- Styled Search Bar --- */
+        .search-container {
+            max-width: 600px;
+            margin: 35px auto;
+            display: flex;
+            box-shadow: 0 4px 12px rgba(15, 43, 72, 0.1);
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 15px;
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #ff9f00 0%, #e68f00 100%);
+            color: #ffffff;
+            border: none;
+            padding: 0 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* --- Marketplace Grid --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .page-title {
+            margin: 30px 0 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f2b48;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        /* --- Product Card Items --- */
+        .product-card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(15, 43, 72, 0.05);
+        }
+
+        .image-wrapper {
+            width: 100%;
+            height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8fafc;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-card img {
+            max-height: 95%;
+            max-width: 95%;
+            object-fit: contain;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 8px;
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            font-size: 19px;
+            font-weight: 600;
+            color: #a6422f;
+            margin-bottom: 15px;
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, #0f2b48 0%, #1c4e59 100%);
+            color: #f4efe6;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar-custom">
+        <a class="navbar-brand" href="/">Minutes <span>Explore Plus</span></a>
+        <div class="nav-buttons">
+            <a href="/cart" class="btn-cart">Cart</a>
+            <a href="/admin" class="btn-seller">Seller Panel</a>
+        </div>
+    </nav>
+
+    <!-- Search Bar Layout Component -->
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search for products, brands and more...">
+        <button class="search-btn" onclick="filterProducts()">Search</button>
+    </div>
+
+    <!-- Main Container Layout -->
+    <div class="container">
+        <h2 class="page-title">Top Offers On Minutes</h2>
+        <div id="products-container" class="products-grid"></div>
+    </div>
+
+    <script>
+        let allProducts = [];
+
+        async function loadProducts() {
+            const res = await fetch('/api/products');
+            allProducts = await res.json();
+            displayProducts(allProducts);
+        }
+
+        function displayProducts(productsList) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = "";
+            
+            if(productsList.length === 0) {
+                container.innerHTML = "<div style='grid-column: 1/-1; text-align:center; padding: 40px; color: #64748b;'><h5>No products listed yet. Use the Seller Panel to add items!</h5></div>";
+                return;
+            }
+
+            productsList.forEach(p => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="image-wrapper">
+                            <img src="${p.image}" onerror="this.onerror=null; this.src='https://placeholder.com';">
+                        </div>
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-price">₹${p.price}</div>
+                        <button class="btn-buy" onclick="addToCart('${p.id}','${p.name}',${p.price})">Add to Cart</button>
+                    </div>`;
+            });
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(query));
+            displayProducts(filtered);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterProducts);
+
+        function addToCart(id, name, price) {
+            let cart = JSON.parse(localStorage.getItem('minutes_cart')) || [];
+            cart.push({ id, name, price });
+            localStorage.setItem('minutes_cart', JSON.stringify(cart));
+            alert(name + " added to your cart successfully!");
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>

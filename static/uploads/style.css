@@ -1,0 +1,208 @@
+/* --- Core Oil Painting Style Theme --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* Soft Warm Canvas Background */
+    background-color: #f4efe6; 
+    /* Subtle radial glow to look like a studio backdrop */
+    background-image: radial-gradient(circle at 50% 50%, #f9f6f0 0%, #ede6d9 100%);
+    color: #2c251e; /* Deep Charcoal Brown instead of harsh black */
+    font-family: 'Georgia', 'Times New Roman', serif; /* Classic elegant font structure */
+    padding-bottom: 50px;
+}
+
+/* --- Artistic Fluid Navbar --- */
+.navbar-custom {
+    /* Midnight Teal & Deep Prussian Blue Blend */
+    background: linear-gradient(135deg, #12343b 0%, #0c2226 100%); 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 8%;
+    border-bottom: 3px solid #d4af37; /* Burnished Gold Trim Accent */
+    box-shadow: 0 4px 15px rgba(12, 34, 38, 0.25);
+}
+
+.navbar-brand {
+    color: #f4efe6;
+    font-size: 26px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-decoration: none;
+}
+
+.navbar-brand span {
+    font-style: italic;
+    color: #d4af37; /* Metallic Gold Accent Text */
+    font-size: 13px;
+    display: block;
+    margin-top: 2px;
+}
+
+.nav-buttons a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 18px;
+    border-radius: 20px; /* Smooth rounded pill buttons */
+    margin-left: 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-cart {
+    color: #f4efe6;
+    border: 1px solid #f4efe6;
+}
+
+.btn-cart:hover {
+    background: rgba(244, 239, 230, 0.15);
+}
+
+.btn-seller {
+    background: linear-gradient(135deg, #d4af37 0%, #aa841d 100%); /* Gold Palette Button */
+    color: #0c2226;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.btn-seller:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+/* --- Styled Search Bar --- */
+.search-container {
+    max-width: 600px;
+    margin: 35px auto;
+    display: flex;
+    box-shadow: 0 4px 12px rgba(44, 37, 30, 0.1);
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 15px;
+    border: 1px solid #dcd1bd;
+    background-color: #ffffff;
+    outline: none;
+    font-family: inherit;
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #a6422f 0%, #7d2a1b 100%); /* Deep Crimson Palette Crimson Red */
+    color: #ffffff;
+    border: none;
+    padding: 0 25px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-btn:hover {
+    background: #661f12;
+}
+
+/* --- Gallery Layout Containers --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.page-title {
+    margin: 30px 0 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #12343b;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 8px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+/* --- Framed Product Cards --- */
+.product-card {
+    background: #ffffff;
+    border: 1px solid #e3dec3; /* Cream border outlining a picture frame */
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(44, 37, 30, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px); /* Gently floats upward like art on display */
+    box-shadow: 0 12px 24px rgba(44, 37, 30, 0.15);
+}
+
+.image-wrapper {
+    width: 100%;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #fcfbfa, #f4efe6);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    border: 1px solid #ede6d9;
+}
+
+.product-card img {
+    max-height: 95%;
+    max-width: 95%;
+    object-fit: contain;
+    filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.1)); /* Enhances item depth */
+}
+
+.product-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c251e;
+    margin-bottom: 8px;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-price {
+    font-size: 19px;
+    font-weight: 600;
+    color: #a6422f; /* Earthy Red highlights price tags */
+    margin-bottom: 15px;
+}
+
+.btn-buy {
+    background: linear-gradient(135deg, #12343b 0%, #1c4e59 100%);
+    color: #f4efe6;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: auto;
+    box-shadow: 0 2px 5px rgba(18,52,59,0.2);
+    transition: all 0.2s;
+}
+
+.btn-buy:hover {
+    background: #0c2226;
+    box-shadow: 0 4px 8px rgba(18,52,59,0.4);
+}
