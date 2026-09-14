@@ -237,7 +237,7 @@
             renderCart();
         }
 
-        // --- CONNECTED CHECKOUT FUNCTION ---
+        // --- CONNECTED CHECKOUT FUNCTION (FULLY FIXED & RE-CLOSED) ---
         async function checkout() {
             let cart = JSON.parse(localStorage.getItem('minutes_cart')) || [];
             
@@ -254,22 +254,26 @@
 
             let totalSum = document.getElementById('total-val').innerText;
 
-            // Send order data to your active Flask API backend
-            const response = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cart: cart,
-                    address: addressInput,
-                    total: totalSum
-                })
-            });
+            try {
+                // Send order data using relative cloud endpoints
+                const response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        cart: cart,
+                        address: addressInput,
+                        total: totalSum
+                    })
+                });
 
-            if (response.ok) {
-                alert(`🎉 Success! Your order has been placed.\nAn email confirmation summary has been processed.\n\nEstimated delivery: 30 Minutes.`);
-                clearCart();
-            } else {
-                alert("Order failed to connect to server backend.");
+                if (response.ok) {
+                    alert(`🎉 Success! Your order has been placed.\nAn email confirmation summary has been processed.\n\nEstimated delivery: 30 Minutes.`);
+                    clearCart();
+                } else {
+                    alert("Order placement failed on live server routing.");
+                }
+            } catch (err) {
+                alert("Network communication error with the live application backend.");
             }
         }
 
