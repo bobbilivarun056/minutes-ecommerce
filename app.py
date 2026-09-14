@@ -69,6 +69,7 @@ def add_product():
     return jsonify({"message": "Success!"}), 201
 
 # 3. Fail-Safe Cloud Checkout API (Bypasses email blocks completely)
+# 3. Fail-Safe Cloud Checkout API (Forces instant log output)
 @app.route('/api/checkout', methods=['POST'])
 def process_checkout():
     data = request.json
@@ -76,18 +77,18 @@ def process_checkout():
     address = data.get('address', '')
     total_price = data.get('total', 0)
     
-    # Format the item list text and print directly to Render Dashboard Logs
-    print("\n" + "="*40)
-    print("📢 SUCCESS: MINUTES LIVE ORDER LOGGED ON CLOUD")
-    print("="*40)
+    # Adding flush=True forces Render to display this text immediately
+    print("\n" + "="*40, flush=True)
+    print("📢 SUCCESS: MINUTES LIVE ORDER LOGGED ON CLOUD", flush=True)
+    print("="*40, flush=True)
     for item in cart_items:
-        print(f"📦 ITEM: {item['name']} - ₹{item['price']}")
-    print(f"💰 TOTAL BILL: ₹{total_price}")
-    print(f"📍 SHIPPING ADDRESS: {address}")
-    print("="*40 + "\n")
+        print(f"📦 ITEM: {item['name']} - ₹{item['price']}", flush=True)
+    print(f"💰 TOTAL BILL: ₹{total_price}", flush=True)
+    print(f"📍 SHIPPING ADDRESS: {address}", flush=True)
+    print("="*40 + "\n", flush=True)
     
-    # Instantly returns success to the user interface
     return jsonify({"message": "Order processed successfully!"}), 200
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
