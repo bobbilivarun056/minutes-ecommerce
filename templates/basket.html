@@ -177,16 +177,11 @@
                 <button class="btn-empty" onclick="clearCart()">Empty All Basket Items</button>
             </div>
 
-            <!-- Modified Section: Added Email & Delivery Address Block -->
-            <h3 class="page-title" style="margin-top: 30px;">Contact Information</h3>
+            <h3 class="page-title" style="margin-top: 30px;">Delivery Address</h3>
             <div class="custom-box">
-                <label style="font-weight: bold; font-size: 14px;">Your Email Address (For Order Updates):</label>
-                <input type="email" id="customerEmail" class="address-textarea" style="height: 45px; margin-bottom: 15px;" placeholder="name@example.com" required>
-
-                <label style="font-weight: bold; font-size: 14px; display: block; margin-top: 10px;">Enter Complete Address:</label>
+                <label style="font-weight: bold; font-size: 14px;">Enter Complete Address:</label>
                 <textarea id="deliveryAddress" class="address-textarea" placeholder="Type your delivery address details here..."></textarea>
             </div>
-            
             <a href="/" class="text-link">← Continue Shopping</a>
         </div>
 
@@ -238,12 +233,11 @@
 
         function clearCart() {
             localStorage.removeItem('minutes_cart');
-            document.getElementById('customerEmail').value = "";
             document.getElementById('deliveryAddress').value = "";
             renderCart();
         }
 
-        // --- CONNECTED CHECKOUT FUNCTION ---
+        // --- CONNECTED CHECKOUT FUNCTION (FULLY FIXED & RE-CLOSED) ---
         async function checkout() {
             let cart = JSON.parse(localStorage.getItem('minutes_cart')) || [];
             
@@ -252,32 +246,28 @@
                 return;
             }
 
-            // Capture inputs
-            const emailInput = document.getElementById('customerEmail').value.trim();
             const addressInput = document.getElementById('deliveryAddress').value.trim();
-
-            if (!emailInput || !addressInput) {
-                alert("⚠️ Please fill in both your email and delivery address before placing your order!");
+            if (!addressInput) {
+                alert("⚠️ Please enter a delivery address before placing your order!");
                 return;
             }
 
             let totalSum = document.getElementById('total-val').innerText;
 
             try {
-                // Send order data using relative endpoints
+                // Send order data using relative cloud endpoints
                 const response = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         cart: cart,
                         address: addressInput,
-                        email: emailInput,
                         total: totalSum
                     })
                 });
 
                 if (response.ok) {
-                    alert(`🎉 Success! Your order has been placed.\nAn automated email confirmation invoice summary has been sent to: ${emailInput}\n\nEstimated delivery: 30 Minutes.`);
+                    alert(`🎉 Success! Your order has been placed.\nAn email confirmation summary has been processed.\n\nEstimated delivery: 30 Minutes.`);
                     clearCart();
                 } else {
                     alert("Order placement failed on live server routing.");
